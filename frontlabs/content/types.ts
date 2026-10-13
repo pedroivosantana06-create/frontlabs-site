@@ -124,7 +124,9 @@ export type StageVisual =
   | { kind: "live"; domain: string; word: string; note?: string }
   | { kind: "requests"; url: string; title: string; items: { text: string; state: string }[]; status: string }
   | { kind: "code"; code: CodeSpec }
-  | { kind: "video"; video: VideoSpec; url: string; status: string };
+  | { kind: "video"; video: VideoSpec; url: string; status: string }
+  /** rodada 4 · Front Creative: a mesma foto antes/depois do tratamento, com a linha deslizando sozinha */
+  | { kind: "creative"; src: string; alt: string; before: string; after: string; badge: string };
 export type StageSpec = {
   /** caminho da imagem de fundo (foto borrada), "horizon" para o gradiente ou "living" para o Horizonte em movimento */
   bg: string;

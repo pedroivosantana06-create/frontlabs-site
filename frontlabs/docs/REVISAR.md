@@ -252,3 +252,24 @@ Relatório completo: `qa/frontlabs-r3/revisao-externa.md` (1 grave, 7 médios, 9
 | L7 | Passo 02 rotulado "preview ready" com o site de um venue | **Corrigido**: "a site we built" (igual ao pilar Loved) |
 | L8 | Mídia da aba ativa montada duas vezes (palco + acordeão escondido) | **Mantido**: estrutura da R2 (acordeão no celular). A cópia escondida não toca (o vídeo só toca visível) e não baixa (fontes só perto da tela) |
 | L9 | Results com 2.644px a 390 | Ver M5 |
+
+
+---
+
+## Rodada 4 (13/10)
+
+### R4.1 Decidir
+- **Front Creative (etapa) × Front Cinematic (produto).** Convivem agora: a etapa 02 da home e de /how-it-works chama "Front Creative" (fotos animadas com IA, cor, imagem melhor); na /pricing e em /what-you-get o add-on de $197 continua "Front Cinematic". Pedro: unificar o nome? Atenção: como etapa, o Front Creative parece incluído em todo plano, mas os filmes são add-on no Launch e inclusos só no Signature. Se não unificar, talvez a etapa precise de uma nota "/with Signature or Front Cinematic".
+- A pílula "6 films · color graded" do visual do Front Creative usa o número do Front Cinematic (6 filmes), que já está na /pricing.
+- Textos novos das etapas (Front Coded, Front Creative, Booking) foram escritos a partir do roteiro da rodada 4; revisar o tom.
+
+### R4.2 Decisões tomadas sozinho
+- Gradiente vivo em **CSS** (8 manchas em radial-gradient, sem blur de filtro), não em canvas: mais simples, 60 fps no celular emulado a 4× CPU.
+- Mantive a foto do Horizonte a 35% em soft-light por cima das manchas (textura do arquivo original).
+- Véu do Horizonte vivo de 32% → **40%** e névoa a 70%: com o fundo andando 15–30%, a névoa clara passava atrás da virada da chamada final e caía abaixo de AA. O passo 05 continua com o véu duplo da R3 (fica mais escuro que os outros blocos; dá para tirar um se o Pedro achar escuro demais, o "Live." é grande).
+- No passo a passo da home, "Design" virou **Front Creative** (rótulo /your photos) e "Code" virou **Front Coded**; a ordem dos 5 passos não mudou (Front Creative antes de Front Coded ali, ao contrário das abas).
+- A aba Front Creative usa o tempo padrão (6s = uma ida e volta da linha).
+- O título "Running while you work." estava preto em produção (ordem do CSS); corrigido.
+
+### R4.3 Git
+- O merge do PR #1 (rodada 3) foi bloqueado pelo modo automático do Claude; a rodada 4 saiu da `rodada-3`. O PR #2 (do amigo, `allowScripts`) está aberto e não foi tocado.

@@ -1,0 +1,46 @@
+.frame {
+  position: relative; overflow: hidden; isolation: isolate; aspect-ratio: 4 / 3; width: 100%;
+  border-radius: var(--r-media-lg); background: var(--c-placeholder-dark);
+}
+.after, .clip, .unclip { position: absolute; inset: 0; }
+.img { object-fit: cover; animation: camera var(--creative-camera) ease-in-out infinite; animation-play-state: paused; }
+/* sem tratamento: a mesma foto, lavada e levemente fora de foco */
+.raw { filter: var(--creative-raw); }
+
+/* janela do "antes": anda de -90% a -10% e volta; a foto dentro anda o contrário e fica no lugar */
+.clip { overflow: hidden; animation: wipe var(--creative-wipe) ease-in-out infinite; animation-play-state: paused; transform: translateX(-50%); }
+.unclip { animation: unwipe var(--creative-wipe) ease-in-out infinite; animation-play-state: paused; transform: translateX(50%); }
+.frame[data-on] .img, .frame[data-on] .clip, .frame[data-on] .unclip { animation-play-state: running; }
+.line { position: absolute; top: 0; right: 0; bottom: 0; width: 2px; background: var(--c-surface); }
+
+.tag {
+  position: absolute; top: var(--s-3); z-index: 1; padding: 2px var(--s-2); border-radius: var(--r-pill);
+  background: var(--creative-tag-bg); color: var(--c-on-media);
+}
+.tagBefore { left: var(--s-3); }
+.tagAfter { right: var(--s-3); }
+.badge {
+  position: absolute; left: var(--s-3); bottom: var(--s-3); z-index: 1;
+  display: inline-flex; align-items: center; gap: var(--s-2); height: 32px; padding-inline: var(--s-3);
+  border-radius: var(--r-pill); background: var(--c-surface); color: var(--c-ink); font-family: var(--f-mono); font-size: var(--t-meta);
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-live); }
+
+@keyframes wipe {
+  0%, 100% { transform: translateX(-90%); }
+  50% { transform: translateX(-10%); }
+}
+@keyframes unwipe {
+  0%, 100% { transform: translateX(90%); }
+  50% { transform: translateX(10%); }
+}
+@keyframes camera {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+/* parado: linha no meio, sem zoom */
+@media (prefers-reduced-motion: reduce) {
+  .img, .clip, .unclip { animation: none !important; }
+}
+:global(html[data-motion-paused]) .img, :global(html[data-motion-paused]) .clip, :global(html[data-motion-paused]) .unclip { animation: none !important; }

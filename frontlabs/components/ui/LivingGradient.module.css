@@ -1,28 +1,52 @@
 .root { position: absolute; inset: 0; z-index: -2; overflow: hidden; border-radius: inherit; background: var(--p-mata); pointer-events: none; }
-/* camadas maiores que a moldura: o movimento nunca mostra a borda */
-.layer { position: absolute; inset: -18%; will-change: transform; animation-play-state: paused; }
-.layer img { object-fit: cover; }
-.root[data-on] .layer { animation-play-state: running; }
 
-.base { animation: base var(--living-1) ease-in-out infinite alternate; }
-.mid { opacity: 0.6; mix-blend-mode: soft-light; animation: mid var(--living-2) ease-in-out -9s infinite alternate; }
-.top { opacity: 0.45; filter: blur(var(--living-blur)); animation: top var(--living-3) ease-in-out -5s infinite alternate; }
+/* mancha: elipse de cor cheia no centro, sumindo até a borda (o "blur" já vem do gradiente) */
+.blob {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(closest-side, var(--c) 0%, var(--c) 28%, transparent 100%);
+  will-change: transform;
+  animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+.root[data-on] .blob { animation-play-state: running; }
+.p1 { animation-name: p1; }
+.p2 { animation-name: p2; }
+.p3 { animation-name: p3; }
+.p4 { animation-name: p4; }
+
+/* textura do arquivo original, parada, por cima das manchas */
+.texture { position: absolute; inset: 0; opacity: var(--living-texture); mix-blend-mode: soft-light; }
+.texture img { object-fit: cover; }
 .veil { position: absolute; inset: 0; background: var(--living-veil); }
 
-@keyframes base {
-  from { transform: translate3d(-3%, -2%, 0) scale(1.02) rotate(-1.5deg); }
-  to { transform: translate3d(3%, 2.5%, 0) scale(1.1) rotate(1.5deg); }
+/*
+ * Caminhos fechados (0% = 100%): o loop é contínuo, sem ida e volta. Translate em % da própria
+ * mancha (~70–110% da caixa) → 15–30% da caixa; escala entre 0.85 e 1.25.
+ */
+@keyframes p1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  25% { transform: translate3d(30%, 14%, 0) scale(1.2); }
+  50% { transform: translate3d(8%, 34%, 0) scale(0.9); }
+  75% { transform: translate3d(-26%, 12%, 0) scale(1.12); }
 }
-/* espelhada: as manchas da camada do meio não coincidem com as de baixo */
-@keyframes mid {
-  from { transform: scaleX(-1) translate3d(4%, 3%, 0) scale(1.12) rotate(3deg); }
-  to { transform: scaleX(-1) translate3d(-4%, -2%, 0) scale(1.02) rotate(-2deg); }
+@keyframes p2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.1); }
+  25% { transform: translate3d(-30%, 18%, 0) scale(0.88); }
+  50% { transform: translate3d(-12%, -22%, 0) scale(1.25); }
+  75% { transform: translate3d(22%, -10%, 0) scale(0.95); }
 }
-@keyframes top {
-  from { transform: translate3d(5%, -4%, 0) scale(1.15) rotate(-3deg); opacity: 0.3; }
-  to { transform: translate3d(-5%, 3%, 0) scale(1.04) rotate(2deg); opacity: 0.55; }
+@keyframes p3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.95); }
+  33% { transform: translate3d(34%, -20%, 0) scale(1.22); }
+  66% { transform: translate3d(-32%, 16%, 0) scale(0.86); }
+}
+@keyframes p4 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  20% { transform: translate3d(24%, -26%, 0) scale(0.9); }
+  45% { transform: translate3d(-6%, -36%, 0) scale(1.2); }
+  70% { transform: translate3d(-28%, -8%, 0) scale(0.92); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .layer { animation: none !important; }
+  .blob { animation: none !important; }
 }

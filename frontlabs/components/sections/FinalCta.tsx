@@ -3,6 +3,7 @@ import { useId, useState, type FormEvent } from "react";
 import { site } from "@/content/site";
 import type { FinalCtaContent } from "@/content/types";
 import { Icon } from "@/components/ui/Icon";
+import { LivingGradient } from "@/components/ui/LivingGradient";
 import { Media } from "@/components/ui/Media";
 import styles from "./FinalCta.module.css";
 
@@ -11,7 +12,7 @@ const valid = {
   url: (v: string) => /^(https?:\/\/)?([\w-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(v),
 };
 
-/** CTA final (B): título centralizado, frase, card branco com input pill + botão e microcopy. Sem backend: valida e mostra sucesso. */
+/** CTA final (B), em todas as páginas: título centralizado, frase, card branco com input pill + botão e microcopy. Sem backend: valida e mostra sucesso. */
 export function FinalCta({ data = site.finalCta }: { data?: FinalCtaContent }) {
   const id = useId();
   const [value, setValue] = useState("");
@@ -34,7 +35,8 @@ export function FinalCta({ data = site.finalCta }: { data?: FinalCtaContent }) {
   return (
     <section id={data.id} data-section="final-cta" className={onMedia ? "field-wrap" : "section"} aria-labelledby={`${data.id}-title`}>
       <div className={[styles.inner, onMedia ? styles.onMedia : ""].join(" ")}>
-        {data.background ? <Media media={data.background} fill className={styles.bg} /> : null}
+        {/* rodada 4: o Horizonte (gradient) vira o Horizonte vivo; outra mídia continua parada */}
+        {data.background?.kind === "gradient" ? <LivingGradient dim /> : data.background ? <Media media={data.background} fill className={styles.bg} /> : null}
         <div className="container">
           <h2 id={`${data.id}-title`} className={shout ? `t-shout ${styles.shout}` : `t-display ${styles.title}`}>
             {data.title}

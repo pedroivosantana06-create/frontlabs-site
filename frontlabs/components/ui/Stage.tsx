@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { StageSpec } from "@/content/types";
+import { BeforeAfter } from "./BeforeAfter";
 import { CodeTyper } from "./CodeTyper";
 import { LivingGradient } from "./LivingGradient";
 import { PreviewCard } from "./PreviewCard";
@@ -10,7 +11,7 @@ const HORIZON = "/img/gradiente-horizonte-16x9.jpg";
 
 /**
  * Palco (DESIGN §4.2.2): fundo borrado, Horizonte ou Horizonte vivo, raio 18–24, grão, e por cima o
- * "momento" desenhado em HTML (código sendo escrito, site em vídeo, domínio no ar, lista de pedidos).
+ * "momento" desenhado em HTML (código sendo escrito, site em vídeo, foto antes/depois, domínio no ar, lista de pedidos).
  * Usado nas abas da home e nas linhas de /how-it-works.
  */
 export function Stage({ stage, className, sizes = "(max-width: 1023px) 100vw, 60vw" }: { stage: StageSpec; className?: string; sizes?: string }) {
@@ -32,6 +33,7 @@ function Visual({ stage }: { stage: StageSpec }) {
   const v = stage.visual;
   if (v.kind === "preview") return <PreviewCard preview={v.preview} />;
   if (v.kind === "code") return <CodeTyper code={v.code} />;
+  if (v.kind === "creative") return <BeforeAfter src={v.src} alt={v.alt} before={v.before} after={v.after} badge={v.badge} />;
   if (v.kind === "video") return <VideoWindow video={v.video} url={v.url} status={v.status} />;
   if (v.kind === "live") {
     return (
