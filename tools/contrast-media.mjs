@@ -1,6 +1,7 @@
 // node tools/contrast-media.mjs <url> <largura> "<seletor>" ["<seletor>"...]
 // Contraste de texto sobre imagem: esconde o texto, fotografa o fundo atrás dele e compara
 // a cor do texto com a média e com o pixel 90% mais claro do fundo.
+// SEEK_MS=<ms>: mede com as animações congeladas nesse instante (rodada 4, Horizonte vivo).
 import { chromium } from 'playwright';
 
 const [url, w, ...sels] = process.argv.slice(2);
@@ -15,6 +16,8 @@ for (const sel of sels) {
   const el = page.locator(sel).first();
   if (!(await el.count())) { console.log(`- ${sel}: não encontrado`); continue; }
   await el.scrollIntoViewIfNeeded();
+  // rodada 4: SEEK_MS=<ms> congela todas as animações nesse instante (o Horizonte vivo muda o fundo)
+  if (process.env.SEEK_MS) { await page.waitForTimeout(300); await page.evaluate((t) => document.getAnimations().forEach((a) => { a.pause(); a.currentTime = t; }), Number(process.env.SEEK_MS)); await page.waitForTimeout(200); }
   const info = await el.evaluate((e) => { const c = getComputedStyle(e); return { color: c.color, fs: c.fontSize, fw: c.fontWeight }; });
   await el.evaluate((e) => { e.dataset.prevVis = e.style.visibility; e.style.visibility = 'hidden'; });
   const box = await el.boundingBox();

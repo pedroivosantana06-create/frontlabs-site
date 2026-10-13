@@ -39,3 +39,6 @@
 
 /* palco sem overflow: hidden (cresce com o card) → o grão acompanha o raio */
 [data-stage]::after { border-radius: inherit; }
+
+/* rodada 3: pausa global das animações (MotionToggle, WCAG 2.2.2) */
+html[data-motion-paused] *, html[data-motion-paused] *::before, html[data-motion-paused] *::after { animation-play-state: paused !important; }

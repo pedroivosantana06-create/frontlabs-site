@@ -12,10 +12,11 @@ for (const w of widthsArg(ws || '1440,390')) {
     const vh = innerHeight; const limit = vh * 0.12;
     let secs = [...document.querySelectorAll('[data-section], section, footer')];
     secs = secs.filter((e) => !secs.some((o) => o !== e && o.contains(e)));
-    // blocos de conteúdo: texto, controles e mídia que não seja fundo (fundos com mais de 60% da janela são ignorados)
+    // blocos de conteúdo: texto, controles, mídia que não seja fundo (fundos com mais de 60% da janela são ignorados),
+    // palcos ([data-stage]) e desenhos com role=img (rodada 3: o Horizonte vivo tem camadas maiores que a moldura)
     const hasText = (e) => [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
     const leafs = (root) => [...root.querySelectorAll('*')]
-      .filter((e) => e.matches('img,video,svg,button,input,[data-media]') || hasText(e))
+      .filter((e) => e.matches('img,video,svg,button,input,[data-media],[data-stage],[role=img]') || hasText(e))
       .filter((e) => { const r = e.getBoundingClientRect(); const c = getComputedStyle(e); return r.height > 2 && r.width > 2 && r.height < innerHeight * 0.6 && c.visibility !== 'hidden' && !e.closest('[hidden]'); });
     return secs.map((s) => {
       const items = leafs(s).map((e) => { const r = e.getBoundingClientRect(); return [r.top + scrollY, r.bottom + scrollY]; }).sort((a, b) => a[0] - b[0]);

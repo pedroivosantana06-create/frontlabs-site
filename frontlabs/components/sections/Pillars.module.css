@@ -1,33 +1,30 @@
 /* B: quando vem logo depois do problema, o card cola na frase (sem respiro em cima). */
 :global([data-section="statement"]) + .section { padding-top: 0; }
-.head { display: grid; gap: var(--s-4); margin-bottom: var(--s-7); max-width: 760px; }
+.headRow { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-5); margin-bottom: var(--s-7); }
+.head { display: grid; gap: var(--s-4); max-width: 760px; }
 .turn { display: block; letter-spacing: var(--t-hero-ls); font-size: var(--turn-size); color: var(--turn-color); margin-top: var(--turn-gap); }
-.card {
-  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
-  background: var(--c-surface); border-radius: var(--r-card); padding: var(--s-6);
+.grid { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: var(--live-gap); }
+.card { display: flex; flex-direction: column; min-width: 0; padding: var(--s-2); border-radius: var(--r-card); background: var(--c-surface); }
+
+/* área visual: 4:3, raio 18, fundo claro; o que estiver animando fica dentro dela */
+.visual {
+  position: relative; display: grid; place-items: center; overflow: hidden; aspect-ratio: 4 / 3;
+  border-radius: var(--r-media-lg); background: var(--demo-bg);
 }
-.item { display: flex; flex-direction: column; padding-inline: var(--s-5); border-left: 1px solid var(--c-line); }
-.item:first-child { border-left: 0; padding-left: 0; }
-.item:last-child { padding-right: 0; }
+.window { width: 88%; }
+
+.body { display: flex; flex-direction: column; padding: var(--s-5) var(--s-4) var(--s-4); flex: 1; }
 .top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .icon {
   display: grid; place-items: center; width: var(--icon-circle); height: var(--icon-circle); border-radius: 50%; /* círculo de ícone 44 (§6.2) */
   background: var(--c-btn); color: var(--c-btn-ink);
 }
 .num { color: var(--c-mute); }
-.title { margin-top: var(--s-8); }
-.text { margin-top: var(--s-3); color: var(--c-text); max-width: 34ch; }
+.title { margin-top: var(--s-5); }
+.text { margin-top: var(--s-2); color: var(--c-text); max-width: 34ch; }
 @media (max-width: 1023px) {
-  .card { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--s-6); }
-  .item:nth-child(odd) { border-left: 0; padding-left: 0; }
-  .item:nth-child(even) { padding-right: 0; }
-  .item:nth-child(n + 3) { padding-top: var(--s-6); border-top: 1px solid var(--c-line); }
-  .title { margin-top: var(--s-7); }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
-  .card { grid-template-columns: minmax(0, 1fr); padding: var(--s-5); row-gap: 0; }
-  .item, .item:nth-child(even), .item:nth-child(n + 3) { border-left: 0; padding: var(--s-6) 0; border-top: 1px solid var(--c-line); }
-  .item:first-child { border-top: 0; padding-top: 0; }
-  .item:last-child { padding-bottom: 0; }
-  .title { margin-top: var(--s-6); }
+  .grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
 }

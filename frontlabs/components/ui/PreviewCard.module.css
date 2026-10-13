@@ -33,4 +33,10 @@
 @keyframes ring { 0% { transform: scale(0.6); opacity: 0.8; } 70%, 100% { transform: scale(1.6); opacity: 0; } }
 .compact .body { padding: var(--s-5) var(--s-4); }
 .compact .rows { grid-template-columns: minmax(0, 1fr); }
+/* janela com vídeo: barra e status menores, miolo encostado */
+.bleed .body, .bleed.compact .body { padding: 0; gap: 0; }
+.compact .bar { padding: var(--s-2) var(--s-3); gap: var(--s-2); }
+.compact .dots i { width: 7px; height: 7px; }
+.compact .url { font-size: var(--t-micro); padding: 2px var(--s-2); }
+.compact .status { padding: var(--s-2) var(--s-3); font-size: var(--t-micro); }
 @media (max-width: 767px) { .rows { grid-template-columns: minmax(0, 1fr); } .body { padding: var(--s-5) var(--s-4); } }

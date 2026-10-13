@@ -1,5 +1,6 @@
 import type { ResultsContent } from "@/content/types";
 import { Icon } from "@/components/ui/Icon";
+import { ResultsScroll } from "./ResultsScroll";
 import styles from "./Results.module.css";
 
 /**
@@ -9,6 +10,7 @@ import styles from "./Results.module.css";
  */
 export function Results({ data }: { data: ResultsContent }) {
   if (!data.enabled) return null;
+  if (data.mode === "scroll") return <ResultsScroll data={data} />;
   return (
     <section id={data.id} data-section="results" className="section" aria-labelledby={`${data.id}-title`}>
       <div className={`container ${styles.grid}`}>

@@ -185,6 +185,32 @@
   --c-highlight: var(--grey);     /* coluna destacada da tabela */
   --row-h: 64px;                  /* linha da tabela (Ploy 65) */
 
+  /* rodada 3: movimento nas seções */
+  --dur-tick: 3000ms;             /* cards ao vivo: cada card atualiza a cada 3s */
+  --dur-flash: 600ms;             /* piscada dos mini-stats na atualização */
+  --dur-crossfade: 600ms;         /* troca do fundo em "What changes" */
+  --scrolly-zoom: 1.04;           /* zoom de entrada do fundo novo (1.04 → 1) */
+  /* rodada 4: Horizonte vivo = mesh gradient com as manchas da receita (DESIGN §4.2.1), azul em cima, verde embaixo */
+  --h-ceu-1: #1f6f9e; --h-ceu-2: #2e86b5; --h-nevoa: #9bb8c4;
+  --h-mata-1: #25301f; --h-mata-2: #2a3524; --h-grama-1: #6f7a38; --h-grama-2: #55602a; --h-musgo: #3e4c1d;
+  --creative-wipe: 6s;            /* Front Creative: linha do antes/depois, ida e volta */
+  --creative-camera: 12s;         /* zoom lento 1 → 1.06 → 1 da foto "depois" */
+  --creative-raw: saturate(0.55) contrast(0.85) brightness(0.95) blur(0.6px);
+  --creative-tag-bg: rgb(10 10 10 / 0.55);
+  --living-texture: 0.35;         /* foto do Horizonte em soft-light por cima das manchas (textura do arquivo) */
+  --living-veil: rgb(10 10 10 / 0.4); /* r4: o mesh anda 15–30% da caixa e a névoa clara passa atrás do texto; 0.4 = menor véu que mantém o texto branco ≥ AA em 5 instantes do loop (tools/contrast-media.mjs com SEEK_MS) */
+  --code-bg: var(--ink);
+  --code-bar: #1a1a1a;
+  --code-fs: 13px; --code-lh: 20px;
+  --code-plain: #b8b5b0;          /* tons de cinza + branco; uma cor só (céu claro) para strings */
+  --code-dim: #8a8782;
+  --code-tag: #dedbd6;
+  --code-kw: #ffffff;
+  --code-str: var(--p-ceu-claro);
+  --demo-bg: var(--bg);           /* área visual dos cards (4:3, raio 18) */
+  --demo-fs: 12px;                /* texto dentro das mini telas */
+  --device-r: 18px;               /* celular desenhado em CSS */
+
   --z-header: 50;
   --z-menu: 60;
 }

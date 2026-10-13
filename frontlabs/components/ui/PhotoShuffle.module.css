@@ -1,0 +1,11 @@
+/* grade final: uma foto alta à esquerda, duas empilhadas à direita */
+.grid { display: grid; grid-template-columns: 1.2fr 1fr; grid-template-rows: 1fr 1fr; gap: 6px; width: 78%; aspect-ratio: 4 / 3; }
+.photo {
+  position: relative; overflow: hidden; border-radius: var(--r-card-sm); border: 3px solid var(--c-surface); background: var(--c-surface);
+  transition: transform 900ms var(--ease-enter);
+}
+.photo img { object-fit: cover; }
+.photo[data-i="0"] { grid-row: 1 / span 2; transform: translate(14%, 6%) rotate(-7deg) scale(0.86); }
+.photo[data-i="1"] { transform: translate(-30%, 22%) rotate(9deg) scale(0.9); }
+.photo[data-i="2"] { transform: translate(-46%, -18%) rotate(-4deg) scale(0.92); }
+.tidy .photo { transform: none; }

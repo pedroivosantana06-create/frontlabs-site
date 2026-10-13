@@ -137,7 +137,7 @@ export function FeatureTabs() {
                       <span
                         key={`${g}-${t}`}
                         className={styles.bar}
-                        style={{ "--interval": `${data.intervalMs}ms`, animationPlayState: visible ? "running" : "paused" } as CSSProperties}
+                        style={{ "--interval": `${tab.durationMs ?? data.intervalMs}ms`, animationPlayState: visible ? "running" : "paused" } as CSSProperties}
                         onAnimationEnd={next}
                         aria-hidden="true"
                       />

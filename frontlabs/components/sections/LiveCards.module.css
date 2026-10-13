@@ -1,14 +1,14 @@
 /* Campo (Ploy: rosa) → Horizonte com grão, raio 24. Cards 373 / pad 24 / gap 16 (medido). */
 .field { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--r-field); padding: var(--s-9) var(--gutter) var(--s-8); color: var(--c-on-media); }
-.bg { z-index: -2; }
 .inner { max-width: var(--live-card-w); margin-inline: auto; }
 .head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-6); align-items: end; }
 .headLeft { display: grid; gap: var(--s-4); }
-.label { color: var(--c-on-media); }
-.title { color: var(--c-on-media); max-width: 11em; }
-.text { color: var(--c-on-media); font-size: var(--t-body); max-width: 30em; justify-self: end; padding-bottom: var(--s-2); }
+.field .label { color: var(--c-on-media); }
+.field .title { color: var(--c-on-media); max-width: 11em; } /* .field na frente: vence o .t-display de base.css qualquer que seja a ordem dos chunks de CSS */
+.headRight { display: flex; align-items: flex-end; gap: var(--s-5); justify-self: end; }
+.text { color: var(--c-on-media); font-size: var(--t-body); max-width: 30em; padding-bottom: var(--s-2); }
 
-.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--live-gap); margin-top: var(--s-10); }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--live-gap); margin-top: var(--s-8); }
 .card {
   display: flex; flex-direction: column; gap: var(--s-4); min-width: 0;
   padding: var(--s-5); border-radius: var(--r-card); background: var(--c-surface); color: var(--c-text);
@@ -38,6 +38,8 @@
 .logText { animation: log var(--dur-log) var(--ease); }
 @keyframes log { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
+.flash { animation: flash var(--dur-flash) var(--ease); }
+@keyframes flash { from { opacity: 0.35; } to { opacity: 1; } }
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); margin: 0; }
 .stats dt { font-size: var(--t-meta); color: var(--c-mute); }
 .stats dd { margin: var(--s-1) 0 0; font-size: var(--t-live-stat); font-weight: var(--w-title); letter-spacing: -0.02em; color: var(--c-ink); }
@@ -49,7 +51,7 @@
 
 @media (max-width: 1023px) {
   .head { grid-template-columns: minmax(0, 1fr); }
-  .text { justify-self: start; }
+  .headRight { justify-self: stretch; justify-content: space-between; }
   .cards { grid-template-columns: minmax(0, 1fr); margin-top: var(--s-8); }
 }
 @media (max-width: 767px) {

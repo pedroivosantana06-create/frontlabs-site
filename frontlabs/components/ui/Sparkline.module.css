@@ -1,0 +1,2 @@
+.slide { animation: slide var(--dur-odo) var(--ease-enter) both; }
+@keyframes slide { from { transform: translateX(var(--step)); } to { transform: none; } }

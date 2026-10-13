@@ -1,0 +1,14 @@
+.demo { display: grid; justify-items: center; align-content: center; gap: var(--s-3); width: 82%; font-size: var(--demo-fs); }
+.field {
+  display: flex; align-items: center; gap: var(--s-1); width: 100%; height: 40px; padding-inline: var(--s-4) var(--s-1);
+  border-radius: var(--r-pill); background: var(--c-surface); color: var(--c-ink); font-family: var(--f-mono);
+}
+.text { white-space: nowrap; overflow: hidden; min-width: 0; }
+.caret { width: 1px; height: 14px; background: var(--c-ink); flex-shrink: 0; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.send { display: grid; place-items: center; width: 32px; height: 32px; margin-left: auto; flex-shrink: 0; border-radius: 50%; background: var(--c-ink); color: var(--c-btn-ink); }
+.or { color: var(--c-on-media); }
+.button {
+  display: inline-flex; align-items: center; height: 32px; padding-inline: var(--s-4); border-radius: var(--r-pill);
+  border: 1px solid var(--c-on-media-border); color: var(--c-on-media); font-size: var(--t-meta); white-space: nowrap;
+}

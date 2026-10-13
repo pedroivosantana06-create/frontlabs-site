@@ -1,0 +1,31 @@
+.demo { display: grid; align-content: center; gap: var(--s-3); width: 100%; height: 100%; padding: var(--s-4); font-size: var(--demo-fs); }
+.bar {
+  display: flex; align-items: center; gap: var(--s-2); height: 34px; padding-inline: var(--s-3);
+  border-radius: var(--r-pill); background: var(--c-surface); border: 1px solid var(--c-line); color: var(--c-ink);
+}
+.glass { width: 14px; height: 14px; flex-shrink: 0; fill: none; stroke: var(--c-mute); stroke-width: 1.6; stroke-linecap: round; }
+.query { white-space: nowrap; overflow: hidden; min-width: 0; }
+.caret { width: 1px; height: 14px; background: var(--c-ink); flex-shrink: 0; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.results { display: grid; gap: var(--s-2); }
+.result { position: relative; display: grid; min-height: 46px; padding: var(--s-2) var(--s-3); border-radius: var(--r-card-sm); background: transparent; transition: background var(--dur-fade) var(--ease); }
+.skeleton { display: grid; gap: 6px; align-content: center; }
+.skeleton i { display: block; height: 7px; border-radius: var(--r-pill); background: var(--c-line); }
+.skeleton i:first-child { width: 58%; }
+.skeleton i:last-child { width: 82%; opacity: 0.7; }
+.result:nth-child(2) .skeleton i:first-child { width: 46%; }
+.result:nth-child(3) .skeleton i:first-child { width: 64%; }
+
+/* 1º resultado aceso: vira um card branco com o negócio */
+.found {
+  position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: center; column-gap: var(--s-2);
+  padding: var(--s-2) var(--s-3); opacity: 0; transform: translateY(4px);
+  transition: opacity var(--dur-fade) var(--ease), transform var(--dur-fade) var(--ease);
+}
+.name { font-weight: var(--w-title); color: var(--c-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.url { grid-row: 2; font-family: var(--f-mono); font-size: var(--t-micro); color: var(--c-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stars { grid-row: 1 / span 2; grid-column: 2; align-self: center; letter-spacing: 1px; color: var(--c-ink); font-size: var(--t-micro); }
+.lit { background: var(--c-surface); }
+.lit .skeleton { opacity: 0; }
+.lit .found { opacity: 1; transform: none; }

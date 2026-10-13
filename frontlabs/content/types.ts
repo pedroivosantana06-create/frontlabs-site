@@ -26,6 +26,13 @@ export type PreviewSpec = {
   status: string;
 };
 
+/** Vídeo curto em loop (rodada 3): webm + mp4 + poster; versão do celular opcional. */
+export type VideoSrc = { webm: string; mp4: string; poster: string; ratio: string };
+export type VideoSpec = VideoSrc & { label: string; mobile?: VideoSrc };
+
+/** Editor com código sendo digitado (etapa Code e passo 04). */
+export type CodeSpec = { file: string; code: string; writing: string; done: string; label: string };
+
 export type SectionKey =
   | "logos"
   | "statement"
@@ -85,8 +92,13 @@ export type PillarsContent = Base & {
   titleTurn?: string;
   /** mostra o número mono (/01, /02…) em cada coluna */
   numbered?: boolean;
-  items: { icon: string; title: string; text: string }[];
+  items: { icon: string; title: string; text: string; visual?: PillarVisual }[];
 };
+/** Área visual animada em cima de cada pilar (rodada 3). */
+export type PillarVisual =
+  | { kind: "search"; label: string; queries: string[]; result: { name: string; url: string } }
+  | { kind: "video"; video: VideoSpec; url: string; status: string }
+  | { kind: "checklist"; label: string; items: string[] };
 
 export type OfferItem = {
   name: string;
@@ -110,14 +122,18 @@ export type StageVisual =
   | { kind: "preview"; preview: PreviewSpec }
   | { kind: "booking"; url: string; title: string; button: string; slotsLabel: string; slots: string[]; status: string }
   | { kind: "live"; domain: string; word: string; note?: string }
-  | { kind: "requests"; url: string; title: string; items: { text: string; state: string }[]; status: string };
+  | { kind: "requests"; url: string; title: string; items: { text: string; state: string }[]; status: string }
+  | { kind: "code"; code: CodeSpec }
+  | { kind: "video"; video: VideoSpec; url: string; status: string }
+  /** rodada 4 · Front Creative: a mesma foto antes/depois do tratamento, com a linha deslizando sozinha */
+  | { kind: "creative"; src: string; alt: string; before: string; after: string; badge: string };
 export type StageSpec = {
-  /** caminho da imagem de fundo (foto borrada) ou "horizon" para o gradiente */
+  /** caminho da imagem de fundo (foto borrada), "horizon" para o gradiente ou "living" para o Horizonte em movimento */
   bg: string;
   visual: StageVisual;
 };
 
-export type TabItem = { title: string; text: string; media: MediaSpec; preview?: PreviewSpec; stage?: StageSpec };
+export type TabItem = { title: string; text: string; media: MediaSpec; preview?: PreviewSpec; stage?: StageSpec; /** tempo próprio da aba (o código e os vídeos precisam terminar) */ durationMs?: number };
 export type TabsContent = Base & {
   label?: string;
   title?: string;
@@ -184,11 +200,17 @@ export type StepVisual =
   | { kind: "preview"; preview: PreviewSpec }
   | { kind: "plan"; options: { name: string; note: string; on?: boolean }[] }
   | { kind: "invite"; month: string; day: string; title: string; meta: string; reply: string }
-  | { kind: "live"; domain: string; word: string };
+  | { kind: "live"; domain: string; word: string }
+  | { kind: "send"; label: string; url: string; or: string; button: string }
+  | { kind: "video"; video: VideoSpec; url: string; status: string }
+  | { kind: "photos"; label: string; photos: { src: string; alt: string }[] }
+  | { kind: "code"; code: CodeSpec };
 export type StepsContent = Base & {
   label?: string;
   title: string;
   titleTurn?: string;
+  primary?: Cta;
+  secondary?: Cta;
   items: { label: string; title: string; text: string; visual: StepVisual }[];
 };
 
@@ -247,6 +269,8 @@ export type LiveCard = {
   log: string[];
   stats: { label: string; value: number; suffix?: string }[];
   status: string;
+  /** false = número de verdade (sem /example no card; os mini-stats continuam marcados como exemplo) */
+  illustrative?: boolean;
 };
 export type LiveCardsContent = Base & {
   label?: string;
@@ -256,6 +280,10 @@ export type LiveCardsContent = Base & {
   illustrative: boolean;
   brand: string;
   intervalMs: number;
+  /** defasagem entre os cards (cada um atualiza intervalMs depois do anterior + staggerMs) */
+  staggerMs: number;
+  /** rótulo no topo do card com número real (os mini-stats dele continuam de exemplo) */
+  statsExample: string;
   cards: LiveCard[];
 };
 
@@ -265,7 +293,9 @@ export type ResultsContent = Base & {
   title: string;
   titleTurn?: string;
   text?: string;
-  items: { icon: string; title: string; text: string; product: string }[];
+  items: { icon: string; title: string; text: string; product: string; image?: { src: string; alt: string } }[];
+  /** "scroll": moldura com fundo preso que troca a cada bloco (rodada 3); padrão: grade */
+  mode?: "grid" | "scroll";
 };
 
 /** Plano (página de preço e resumo na home). */
@@ -360,6 +390,8 @@ export type Site = {
     mediaSpace: string;
     step: string;
     pauseMarquee: string;
+    pauseMotion: string;
+    playMotion: string;
     playMarquee: string;
     example: string;
     current: string;

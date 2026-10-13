@@ -7,10 +7,11 @@ import styles from "./PreviewCard.module.css";
  * Janela de navegador desenhada em HTML/CSS: 3 bolinhas, pill de URL, conteúdo e linha de status.
  * Genérico: serve para qualquer marca mostrar "o produto" sem screenshot.
  * `children` substitui o conteúdo padrão quando a seção precisa de outro miolo.
+ * `bleed`: miolo sem respiro (vídeo do site ocupando a janela toda).
  */
-export function PreviewCard({ preview, children, compact, className }: { preview: PreviewSpec; children?: ReactNode; compact?: boolean; className?: string }) {
+export function PreviewCard({ preview, children, compact, bleed, className }: { preview: PreviewSpec; children?: ReactNode; compact?: boolean; bleed?: boolean; className?: string }) {
   return (
-    <figure className={[styles.card, compact ? styles.compact : "", className].filter(Boolean).join(" ")} aria-label={`${site.ui.preview}: ${preview.title}`}>
+    <figure className={[styles.card, compact ? styles.compact : "", bleed ? styles.bleed : "", className].filter(Boolean).join(" ")} aria-label={`${site.ui.preview}: ${preview.title}`}>
       <div className={styles.bar} aria-hidden="true">
         <span className={styles.dots}><i /><i /><i /></span>
         <span className={styles.url}>{preview.url}</span>

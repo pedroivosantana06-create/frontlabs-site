@@ -181,3 +181,95 @@ Relatório completo: `qa/frontlabs-r2/revisao-externa.md` (2 graves, 10 médios,
 | L | "Pay once. Keep it forever." / "No monthly fee, ever" / "takes a minute" | **Copy provisória**: os fatos (sem mensalidade, site do cliente depois do care) têm fonte; "takes a minute" é estilo, revisar |
 | L | `[CONFIRMAR]` do e-mail visível | **Mantido de propósito** até o Pedro confirmar (§1) |
 | L | Rodapé preto, mini card cortado no passo 01, setas em itens sem link, dois CTAs no menu aberto, vazio de 215px depois da linha que preenche | **Mantidos**: rodapé e passo 01 vêm da rodada 1 (já registrados); setas sem link agora em cinza, sem círculo; o respiro da linha que preenche é o `--s-10` (144) entre seções grandes |
+
+---
+
+# Rodada 3 (12/10/2026) — vida nas seções da home
+
+Prompt: `PROMPT_RODADA3.md`. Branch `rodada-3`. Para ver as animações sem abrir o site: `qa/frontlabs-r3/home.webm`.
+
+## R3.1 Qual site virou o "Amor Celeste"
+Não achei nenhum site "Amor Celeste" nesta máquina (procurei em ~/venues, ~/clientes, ~/Downloads, ~/Documents e ~/Desktop; só há crawls de sites de terceiros com "celest" no nome). Usei o **The Oaks Event Center** (`~/venues/oaks-event-center`, o primeiro da lista de preferência). **Trocar pelo Amor Celeste quando achar:** rodar `node tools/record-r3.mjs <url-do-site> <pasta>` com o site rodando e reencodar como está no PROGRESSO (Fase A); os nomes dos arquivos em `frontlabs/public/video/` ficam iguais.
+
+## R3.2 [CONFIRMAR]
+| Onde | O que está no site | Pergunta |
+|---|---|---|
+| Pilares (Loved, Booked), abas (Design, Booking), passo 02, /how-it-works | vídeo da home e do card "Schedule a Tour" do **The Oaks Event Center** (aparecem o nome, a cidade, o telefone e "Rebecca or Gwen" na tela de confirmação) | **Autorização do venue para usar o site na home da Front Labs.** O DESIGN §10.2 pede confirmar com o cliente antes de usar o site dele fora da empresa |
+| Fluxo de agendamento gravado | dados de contato de exemplo ("Alex Rivera", alex@example.com, (555) 010-2030); o envio do template não manda nada | Nada a confirmar: só para registro |
+
+## R3.3 Dado real × ilustrativo (cards "Running while you work")
+- **Real:** "26 previews built this week" (dado do Pedro, 12/10/2026). Esse card não leva `/example`. Quando o número mudar: `site.liveCards.cards[0].value`.
+- **Ilustrativo (marcado `/example`):** os outros dois cards inteiros (12 visitas, 8 pedidos de review, logs, mini-stats) e os **mini-stats do card de previews** (Pages, Speed score, Fixes), que têm o rótulo `/example` em cima. O rótulo do topo da seção diz "/example numbers · the 26 previews are real".
+- Os logs do card de previews foram reescritos para descrever o processo (sem cliente nem cidade inventados): "Link received → preview started" etc.
+- A sparkline do card de previews é decorativa (sobe até 26, sem eixo nem valores).
+- Os mini-stats variam ±1 a cada atualização (pedido do prompt), por isso só nos números ilustrativos.
+
+## R3.4 Decisões tomadas sozinho
+| Decisão | Por quê |
+|---|---|
+| Vídeos gravados de uma cópia do oaks no scratchpad (build de produção na porta 3201) | Os servidores de desenvolvimento do Pedro nas portas 3011/3019 estavam com erro 500 nos arquivos JS (o card de agendamento não abria). Nada em `~/venues` foi alterado |
+| `booking-flow` recortado no card (1040×650) e uma versão do celular só da folha (390×520, 3:4) | Na tela inteira o card ocupava 40% do quadro e ficava ilegível pequeno. A versão do celular entra só nos palcos grandes (abas e /how-it-works a 390); nas áreas 4:3 fica a de desktop |
+| Vídeo sem `autoplay` no HTML; as fontes só entram a meia tela de distância | Com reduced-motion fica no poster; e sem isso a home baixava 2,4 MB de vídeo no carregamento, disputando banda com a imagem do herói (agora 156 KB de posters) |
+| Duração própria por aba (Code 10s, Design 10s, Booking 11,5s; Launch e Care 6s) | Com 6s o código nunca chegava ao "build passed" e o vídeo do agendamento nunca chegava à confirmação |
+| Cards ao vivo atualizam a cada 3s (não 4s) e o log troca junto | Pedido do Pedro ("a cada 3s"); a Ploy troca o log a cada ~4s |
+| What changes: card branco raio 24 sobre a foto, sem véu | Opção do prompt; sem texto direto na foto não precisa de véu, e a foto fica sem efeito de cor (DESIGN §7.2.10) |
+| What changes: blocos 3 (find you, calls and visits, nothing to manage) com `foto-cadeiras`, `foto-noiva-notebook`, `foto-borrada-hero` | Pedido do prompt. As outras 3 saíram só da home: /what-you-get continua com os 6 cards em grade (`mode` padrão) |
+| Passo a passo: 5 numa linha a partir de 1280px; faixa com rolagem *snap* entre 768 e 1279; empilhados no celular | Com 5 colunas abaixo de 1280 o card ficava estreito demais para a mini tela |
+| `offers` saiu da ordem da home (o `PlanCard` continua em /pricing) | Pedido do prompt; a frase do preço virou a virada do passo a passo |
+| Código digitado: componente Next com `<title>` (React 19 sobe para o `<head>`), JSON-LD `LocalBusiness`, `<h1>` e o link "Book a visit" | Código de verdade e curto; cores só em cinzas + branco e o céu claro `#86AABB` nas strings |
+| Estrelas no resultado de busca em preto, sem número | "Nada de #1" e sem nota inventada; amarelo seria cor na interface |
+| O grão por cima do Horizonte vivo vem do contêiner (`[data-field]`/`[data-stage]`), não do componente | Evita grão duplo; ele fica parado por cima, como pede o prompt |
+
+## R3.5 Vale devolver ao default?
+| Componente | Recomendação |
+|---|---|
+| `LoopVideo` (play só visível, máx. 2, fontes perto da tela, reduced-motion no poster) | **Sim.** Genérico |
+| `useMotion` (`useInView`, `useReducedMotion`, `useTypewriter`) | **Sim** |
+| `LivingGradient` | Sim, como "fundo vivo" a partir de qualquer imagem (no default, o placeholder) |
+| `CodeTyper`, `SearchDemo`, `ChecklistDemo`, `SendDemo`, `PhotoShuffle` | Talvez: são da história da Front Labs, mas o `CodeTyper` serve a qualquer estúdio |
+| `ResultsScroll` (scrollytelling com fundo preso) | **Sim**, como variante do Results/Spotlight |
+| Odômetro que dá a volta + sparkline que desliza | **Sim**: melhora direta do `ProofField` do default |
+
+## R3.6 Revisão externa da rodada 3: o que foi feito com cada apontamento
+Relatório completo: `qa/frontlabs-r3/revisao-externa.md` (1 grave, 7 médios, 9 leves).
+
+| # | Apontamento | O que fiz |
+|---|---|---|
+| G1 | /how-it-works a 390: o vídeo do agendamento nunca carregava (a troca para a versão do celular recriava o `<video>` e o observador ficava no antigo) | **Corrigido**: o `<video>` não é mais recriado; as fontes trocam no mesmo elemento com `load()`. Teste novo: a 390 o vídeo `-m` carrega e toca |
+| M1 | O card real (26) se mexe como os ilustrativos | **Ajustado**: a sparkline do card real não ganha pontos novos. O odômetro continua dando a volta a cada 3s (pedido explícito do Pedro: "os números nunca param"); os mini-stats dele variam porque são de exemplo e estão marcados "/example stats". **Atenção:** "this week" envelhece: atualizar o 26 em `site.liveCards.cards[0].value` |
+| M2 | Movimento contínuo sem pausa (WCAG 2.2.2) | **Corrigido**: botão de pausa (`MotionToggle`) no cabeçalho dos pilares, dos cards ao vivo e do passo a passo; pausa a página inteira (demos, cards, vídeos, Horizonte vivo) e retoma |
+| M3 | "Get my free preview →" com 17px de altura; primário é "See pricing" | **Mantido**: a hierarquia é a do prompt (botão primário "See pricing" + link para o CTA). A área de toque do link já é ampliada para 45px por `::after` (mesmo mecanismo da R2) |
+| M4 | Código cortado à direita (passo 04 a 1440, aba Code a 390) | **Corrigido**: linhas de até 41 caracteres, editor grande em 11px no celular, mini editor em 10px com linhas de até 28 |
+| M5 | Foto presa ocupa ~2.800px; vários Horizontes e momentos de impacto | **Reduzido**: blocos de 65% da tela (55% no celular), a seção caiu ~25%. A estrutura (fundo preso de uma tela, Horizonte vivo em "Running", Booking e Launch) é pedido do prompt e fica para o Pedro decidir |
+| M6 | A busca mostra "Your Business" em 1º com ★★★★★ e o Results diz "More people find you", contra o "No ranking promises" do próprio site | **Para o Pedro decidir** (o prompt pede o 1º resultado acendendo). Já sem "#1" e sem nota. Opção mais segura: acender o 2º ou 3º resultado, ou trocar "More people find you" por "Easier to find" |
+| M7 | Passo 01 mostra "Send my info instead", mas o formulário final só aceita o link | **[CONFIRMAR]**: o formulário precisa de um caminho para quem não tem site (campo de e-mail/telefone ou link para mandar as informações). Hoje o botão da animação é só ilustração |
+| L1 | Strings do código em céu claro (paleta Paisagem em texto) | **Mantido**: exceção pedida no prompt ("no máximo uma cor da paleta para strings"); registrada aqui |
+| L2 | Texto de 11–12px nas mini telas; botão "Send my info instead" com mínimo 2,78:1 | **Ajustado**: o botão foi para 13px e o véu do passo 01 para 32% → 4,5 no pixel 90% mais claro. Os 11–12px são texto dentro de desenho (`role="img"` com descrição), não texto de leitura |
+| L3 | Rótulo do topo dos cards ao vivo no limite (4,50) | **Corrigido**: véu do Horizonte vivo de 28% para 32% → 4,97 (p90) a 390 e 5,59 a 1440 |
+| L4 | 144px de Horizonte vazio entre o cabeçalho e os cards | **Corrigido**: 72px |
+| L5 | Só o card 1 tinha a linha `/example` acima dos mini-stats (cards desalinhados) | **Corrigido**: o rótulo "/example stats" foi para o canto de cima, no mesmo lugar do `/example` dos outros |
+| L6 | Meia linha cortada no topo do editor quando o código rola | **Corrigido**: o respiro de cima sai junto na rolagem |
+| L7 | Passo 02 rotulado "preview ready" com o site de um venue | **Corrigido**: "a site we built" (igual ao pilar Loved) |
+| L8 | Mídia da aba ativa montada duas vezes (palco + acordeão escondido) | **Mantido**: estrutura da R2 (acordeão no celular). A cópia escondida não toca (o vídeo só toca visível) e não baixa (fontes só perto da tela) |
+| L9 | Results com 2.644px a 390 | Ver M5 |
+
+
+---
+
+## Rodada 4 (13/10)
+
+### R4.1 Decidir
+- **Front Creative (etapa) × Front Cinematic (produto).** Convivem agora: a etapa 02 da home e de /how-it-works chama "Front Creative" (fotos animadas com IA, cor, imagem melhor); na /pricing e em /what-you-get o add-on de $197 continua "Front Cinematic". Pedro: unificar o nome? Atenção: como etapa, o Front Creative parece incluído em todo plano, mas os filmes são add-on no Launch e inclusos só no Signature. Se não unificar, talvez a etapa precise de uma nota "/with Signature or Front Cinematic".
+- A pílula "6 films · color graded" do visual do Front Creative usa o número do Front Cinematic (6 filmes), que já está na /pricing.
+- Textos novos das etapas (Front Coded, Front Creative, Booking) foram escritos a partir do roteiro da rodada 4; revisar o tom.
+
+### R4.2 Decisões tomadas sozinho
+- Gradiente vivo em **CSS** (8 manchas em radial-gradient, sem blur de filtro), não em canvas: mais simples, 60 fps no celular emulado a 4× CPU.
+- Mantive a foto do Horizonte a 35% em soft-light por cima das manchas (textura do arquivo original).
+- Véu do Horizonte vivo de 32% → **40%** e névoa a 70%: com o fundo andando 15–30%, a névoa clara passava atrás da virada da chamada final e caía abaixo de AA. O passo 05 continua com o véu duplo da R3 (fica mais escuro que os outros blocos; dá para tirar um se o Pedro achar escuro demais, o "Live." é grande).
+- No passo a passo da home, "Design" virou **Front Creative** (rótulo /your photos) e "Code" virou **Front Coded**; a ordem dos 5 passos não mudou (Front Creative antes de Front Coded ali, ao contrário das abas).
+- A aba Front Creative usa o tempo padrão (6s = uma ida e volta da linha).
+- O título "Running while you work." estava preto em produção (ordem do CSS); corrigido.
+
+### R4.3 Git
+- O merge do PR #1 (rodada 3) foi bloqueado pelo modo automático do Claude; a rodada 4 saiu da `rodada-3`. O PR #2 (do amigo, `allowScripts`) está aberto e não foi tocado.

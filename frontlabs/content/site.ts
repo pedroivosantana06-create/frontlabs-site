@@ -1,4 +1,4 @@
-import type { Plan, PreviewSpec, Site, StageSpec } from "./types";
+import type { CodeSpec, Plan, PreviewSpec, Site, StageSpec, VideoSpec } from "./types";
 
 /*
  * Conteúdo da home da Front Labs (docs/FRONTLABS-HOME.md). Site em inglês americano.
@@ -30,58 +30,101 @@ const visitorPreview: PreviewSpec = {
   status: "preview ready before the call",
 };
 
+/*
+ * Vídeos dos nossos sites (rodada 3), gravados com tools/record-r3.mjs.
+ * [CONFIRMAR] É o site do The Oaks Event Center (o "Amor Celeste" não foi achado nesta máquina):
+ * autorização do venue para usar o site na home da Front Labs. Ver docs/REVISAR.md (Rodada 3).
+ */
+const VIDEO: Record<"home" | "booking", VideoSpec> = {
+  home: {
+    webm: "/video/home-scroll.webm",
+    mp4: "/video/home-scroll.mp4",
+    poster: "/video/home-scroll-poster.jpg",
+    ratio: "16 / 10",
+    label: "A venue homepage we built, scrolling",
+  },
+  booking: {
+    webm: "/video/booking-flow.webm",
+    mp4: "/video/booking-flow.mp4",
+    poster: "/video/booking-flow-poster.jpg",
+    ratio: "16 / 10",
+    label: "Our booking flow: pick a date, the number of guests, and confirm",
+    mobile: { webm: "/video/booking-flow-m.webm", mp4: "/video/booking-flow-m.mp4", poster: "/video/booking-flow-m-poster.jpg", ratio: "3 / 4" },
+  },
+};
+
+/** Código de verdade e curto: um componente Next com <title>, JSON-LD LocalBusiness, <h1> e o botão. */
+const CODE: CodeSpec = {
+  file: "app/page.tsx",
+  label: "Code being written for a local business homepage, then the build passes",
+  writing: "writing…",
+  done: "✓ build passed",
+  // linhas de até ~41 caracteres: cabem no editor a 390 sem cortar
+  code: `const business = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Your Business",
+};
+
+export default function Page() {
+  return (
+    <main>
+      <title>Your Business</title>
+      <h1>Your Business</h1>
+      <a href="/book">Book a visit</a>
+      <script type="application/ld+json">
+        {JSON.stringify(business)}
+      </script>
+    </main>
+  );
+}`,
+};
+const CODE_MINI: CodeSpec = {
+  ...CODE,
+  code: `<title>Your Business</title>
+<h1>Your Business</h1>
+<a href="/book">Book now</a>
+<link rel="canonical" />`,
+};
+
 /** As 5 etapas (provisórias): usadas nas abas da home e, em versão longa, em /how-it-works. */
-const STEPS: { label: string; title: string; text: string; long: string; points: string[]; stage: StageSpec }[] = [
+/* durationMs: a aba do código espera o "build passed"; as de vídeo, o vídeo quase inteiro */
+const STEPS: { label: string; title: string; text: string; long: string; points: string[]; stage: StageSpec; durationMs?: number }[] = [
   {
-    label: "/01 code",
-    title: "Code",
-    text: "Clean code built for Google, fast on every phone.",
-    long: "We hand-build your site with clean code and a clear structure, so Google can read it and every phone loads it fast. No ranking promises, just the right foundation.",
-    points: ["Clean, hand-built code", "Fast on every phone", "A structure Google can read"],
-    stage: {
-      bg: "/img/foto-borrada-hero.jpg",
-      visual: {
-        kind: "preview",
-        preview: {
-          url: "preview.frontlabs.co/your-business",
-          eyebrow: "/under the hood",
-          title: "Built the right way for Google",
-          rows: [
-            { label: "/code", value: "Clean" },
-            { label: "/speed", value: "Fast" },
-            { label: "/pages", value: "Easy to read" },
-          ],
-          status: "the right foundation",
-        },
-      },
-    },
+    label: "/01 front coded",
+    title: "Front Coded",
+    text: "Everything your site needs under the hood, packaged: built for Google, fast on every phone.",
+    long: "A packaged code solution: everything your site needs under the hood, already done. Built so Google can read it, fast on every phone, and working the way it should. No ranking promises, just the right foundation.",
+    points: ["Clean, hand-built code", "Fast on every phone", "Everything Google needs to read it"],
+    stage: { bg: "/img/foto-borrada-hero.jpg", visual: { kind: "code", code: CODE } },
+    durationMs: 10000,
   },
   {
-    label: "/02 design",
-    title: "Design",
-    text: "Your business as it really is, from your photos and your words.",
-    long: "We design from what's already yours: your photos, your words, your place. The first look shows the real business, not a template with your logo on it.",
-    points: ["Made from your photos and your words", "Looks like you, not a template", "Ready to see before any call"],
-    stage: { bg: "/img/foto-noiva-borrada.jpg", visual: { kind: "preview", preview: visitorPreview } },
+    label: "/02 front creative",
+    title: "Front Creative",
+    text: "Your photos, brought to life: AI-animated films, color treatment and sharper images.",
+    long: "The creative side: we turn your own photos into short films animated with AI, treat the color so every picture matches, and clean up and sharpen the images you already have.",
+    points: ["Photos animated with AI", "Color treatment on every photo", "Sharper, cleaner images"],
+    stage: {
+      bg: "/img/foto-noiva-borrada.jpg",
+      visual: {
+        kind: "creative",
+        src: "/img/foto-cadeiras.jpg",
+        alt: "The same photo of a set table, before and after color treatment, with a line sliding between the two",
+        before: "/before",
+        after: "/after",
+        badge: "6 films · color graded",
+      },
+    },
   },
   {
     label: "/03 booking",
     title: "Booking",
-    text: "Every page leads to a call, a visit or a booking.",
-    long: "Every page points to one thing: the next step. A call button where thumbs reach, a booking form that takes a minute, and with Signature, automatic replies when someone asks.",
-    points: ["One clear action on every page", "Booking that takes a minute", "Automatic replies with Signature"],
-    stage: {
-      bg: "/img/foto-cadeiras-borrada.jpg",
-      visual: {
-        kind: "booking",
-        url: "yourbusiness.com/book",
-        title: "Book a visit",
-        button: "Book a visit",
-        slotsLabel: "/this week",
-        slots: ["Tue 10:00", "Wed 2:30", "Thu 9:00", "Fri 4:00"],
-        status: "one tap to book",
-      },
-    },
+    text: "A structure built for your customers to book: every page leads to a date.",
+    long: "A structure built for your customers to book: every page leads to a date. A call button where thumbs reach, a booking form that takes a minute, and with Signature, automatic replies when someone asks.",
+    points: ["Built for booking, page by page", "Booking that takes a minute", "Automatic replies with Signature"],
+    stage: { bg: "living", visual: { kind: "video", video: VIDEO.booking, url: "yourbusiness.com/book", status: "booked · added to calendar" } },
+    durationMs: 11500,
   },
   {
     label: "/04 launch",
@@ -89,7 +132,7 @@ const STEPS: { label: string; title: string; text: string; long: string; points:
     text: "Live on your domain, in your name.",
     long: "When you say yes, we launch it on your domain, in your name. You own it. No monthly fee and no hosting bill.",
     points: ["Your domain, your name", "You own the site", "No monthly fee"],
-    stage: { bg: "horizon", visual: { kind: "live", domain: "yourbusiness.com", word: "Live.", note: "/in your name" } },
+    stage: { bg: "living", visual: { kind: "live", domain: "yourbusiness.com", word: "Live.", note: "/in your name" } },
   },
   {
     label: "/05 care",
@@ -189,6 +232,8 @@ export const site: Site = {
     mediaSpace: "Media",
     step: "Step",
     pauseMarquee: "Pause scrolling list",
+    pauseMotion: "Pause animations",
+    playMotion: "Play animations",
     playMarquee: "Resume scrolling list",
     example: "/example",
     current: "current page",
@@ -240,7 +285,7 @@ export const site: Site = {
     "liveCards",
     "results",
     "tabs",
-    "offers",
+    "steps", // rodada 3: o passo a passo entra no lugar do preço ("offers" fica só em /pricing)
     "faq",
     "finalCta",
     // desligadas na rodada 2 (código mantido): logos, statement, steps, timeline, audience
@@ -271,19 +316,23 @@ export const site: Site = {
   liveCards: {
     enabled: true,
     id: "live",
-    illustrative: true, // dados de exemplo: o rótulo /example aparece no topo
-    label: "/example · illustrative numbers",
+    illustrative: true, // há dados de exemplo: o rótulo aparece no topo e /example em cada card ilustrativo
+    label: "/example numbers · the 26 previews are real",
     title: "Running while you work.",
     text: "Your site, your bookings and your reviews, each one quietly doing its job. These cards show what that looks like.",
     brand: "FrontLabs",
-    intervalMs: 4000, // medido na Ploy: o log troca a cada ~4s
+    intervalMs: 3000, // rodada 3: cada card atualiza a cada 3s (o Pedro pediu; a Ploy troca o log a cada ~4s)
+    staggerMs: 1000,
+    statsExample: "/example stats",
     cards: [
       {
         pill: "Site",
-        value: 3,
+        // dado real: 26 previews nesta semana (12/10/2026). Os mini-stats continuam ilustrativos (marcados /example).
+        value: 26,
+        illustrative: false,
         caption: "previews built this week",
-        spark: [2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 9, 12],
-        log: ["New preview → plumbing company in Houston", "Hours updated → studio site", "Photos color-graded → venue site"],
+        spark: [2, 5, 7, 9, 11, 13, 15, 17, 19, 21, 24, 26],
+        log: ["Link received → preview started", "Preview built → from the current site", "Preview sent → before the first call"],
         stats: [{ label: "Pages", value: 6 }, { label: "Speed score", value: 96 }, { label: "Fixes", value: 4 }],
         status: "Building a preview",
       },
@@ -314,14 +363,11 @@ export const site: Site = {
     label: "/what changes",
     title: "What changes when it's handled.",
     titleTurn: "Less chasing. More booked.",
-    text: "Every product does one job well. Here's what each one is for.",
+    mode: "scroll", // rodada 3: 3 blocos sobre o fundo que troca
     items: [
-      { icon: "search", title: "More people find you", text: "Code built the right way for Google.", product: "Launch" },
-      { icon: "phone", title: "More calls and visits", text: "Every page leads to one action.", product: "Launch" },
-      { icon: "calendar", title: "More booked meetings", text: "Instant booking with automatic replies.", product: "Signature" },
-      { icon: "star", title: "More reviews", text: "Automatic Google review requests.", product: "Signature" },
-      { icon: "image", title: "A site that looks like you", text: "6 cinematic films + color-graded photos.", product: "Front Cinematic" },
-      { icon: "check", title: "Nothing to manage", text: "6 months of edits and updates, no monthly fee.", product: "Signature" },
+      { icon: "search", title: "More people find you", text: "Code built the right way for Google.", product: "Launch", image: { src: "/img/foto-cadeiras.jpg", alt: "" } },
+      { icon: "phone", title: "More calls and visits", text: "Every page leads to one action.", product: "Launch", image: { src: "/img/foto-noiva-notebook.jpg", alt: "" } },
+      { icon: "check", title: "Nothing to manage", text: "6 months of edits and updates, no monthly fee.", product: "Signature", image: { src: "/img/foto-borrada-hero.jpg", alt: "" } },
     ],
   },
 
@@ -357,39 +403,91 @@ export const site: Site = {
     titleTurn: "Four things. We handle all of them.",
     numbered: true,
     items: [
-      { icon: "search", title: "Found", text: "When someone nearby searches for what you do, your site is built the right way for Google to read." },
-      { icon: "heart", title: "Loved", text: "The first look shows your business as it really is, not a template." },
-      { icon: "check", title: "Working", text: "Every page fast, every button where it should go, on any phone." },
-      { icon: "calendar", title: "Booked", text: "A clear path from \"just looking\" to a call, a visit or a booking." },
+      {
+        icon: "search",
+        title: "Found",
+        text: "When someone nearby searches for what you do, your site is built the right way for Google to read.",
+        visual: {
+          kind: "search",
+          label: "A search for local businesses, with Your Business showing up in the results",
+          queries: ["wedding venues near me", "plumbers near me", "pool builders near me", "dentists near me", "businesses near me"],
+          result: { name: "Your Business", url: "yourbusiness.com" },
+        },
+      },
+      {
+        icon: "heart",
+        title: "Loved",
+        text: "The first look shows your business as it really is, not a template.",
+        visual: { kind: "video", video: VIDEO.home, url: "preview.frontlabs.co/your-business", status: "a site we built" },
+      },
+      {
+        icon: "check",
+        title: "Working",
+        text: "Every page fast, every button where it should go, on any phone.",
+        visual: {
+          kind: "checklist",
+          label: "A phone with a simple site, and a checklist being ticked: fast on phones, every button works, secure, readable by Google, works on any screen",
+          items: ["Loads fast on phones", "Every button works", "Secure (https)", "Readable by Google", "Works on any screen"],
+        },
+      },
+      {
+        icon: "calendar",
+        title: "Booked",
+        text: "A clear path from \"just looking\" to a call, a visit or a booking.",
+        visual: { kind: "video", video: VIDEO.booking, url: "yourbusiness.com/book", status: "booked · added to calendar" },
+      },
     ],
   },
 
   steps: {
-    enabled: false, // rodada 2: desligada
-    id: "how-it-works",
+    // rodada 3: o passo a passo no lugar do "Pay once. No monthly fee." (a frase do preço virou a virada)
+    enabled: true,
+    id: "process",
     label: "/how it works",
-    title: "You see it first,",
-    titleTurn: "then decide.",
+    title: "From your link to live.",
+    titleTurn: "Pay once. No monthly fee.",
     items: [
       {
-        label: "/before any call",
-        title: "We rebuild your site",
-        text: "Send us your current website. We build the new one before we ever talk.",
-        visual: { kind: "preview", preview: visitorPreview },
+        label: "/your link",
+        title: "Send your site",
+        text: "Your current link, or just your info if you don't have one yet.",
+        visual: { kind: "send", label: "A link being typed into a field, or a button to send your info instead", url: "yourbusiness.com", or: "/or", button: "Send my info instead" },
       },
       {
-        label: "/15 minutes",
-        title: "A 15-minute call",
-        text: "We walk you through the preview. Ask anything. No pitch deck.",
-        visual: { kind: "invite", month: "Oct", day: "14", title: "Your preview, walked through", meta: "15 min · call", reply: "Works for me." },
+        label: "/before you pay",
+        title: "See your preview",
+        text: "We rebuild it first. You see it before you pay anything.",
+        visual: { kind: "video", video: VIDEO.home, url: "preview.frontlabs.co/your-business", status: "a site we built" },
+      },
+      {
+        label: "/your photos",
+        title: "Front Creative",
+        text: "Your photos, color-treated and brought to life.",
+        visual: {
+          kind: "photos",
+          label: "Three photos arranging themselves into a layout",
+          photos: [
+            { src: "/img/foto-cadeiras.jpg", alt: "" },
+            { src: "/img/foto-noiva-notebook.jpg", alt: "" },
+            { src: "/img/foto-borrada-hero.jpg", alt: "" },
+          ],
+        },
+      },
+      {
+        label: "/under the hood",
+        title: "Front Coded",
+        text: "Everything under the hood, packaged: fast and built for Google.",
+        visual: { kind: "code", code: CODE_MINI },
       },
       {
         label: "/live",
-        title: "It goes live",
-        text: "Like it? We launch it on your domain, in your name.",
+        title: "Launch",
+        text: "Live on your domain, in your name.",
         visual: { kind: "live", domain: "yourbusiness.com", word: "Live." },
       },
     ],
+    primary: { label: "See pricing", href: R.pricing },
+    secondary: { label: "Get my free preview →", href: PREVIEW },
   },
 
   tabs: {
@@ -403,7 +501,7 @@ export const site: Site = {
     groups: [
       {
         name: "Every step",
-        tabs: STEPS.map((x) => ({ title: x.title, text: x.text, media: { kind: "placeholder" }, stage: x.stage })),
+        tabs: STEPS.map((x) => ({ title: x.title, text: x.text, media: { kind: "placeholder" }, stage: x.stage, durationMs: x.durationMs })),
       },
     ],
   },

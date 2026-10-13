@@ -6,6 +6,7 @@
 .bg { object-fit: cover; z-index: -2; border-radius: inherit; }
 .horizon .bg { filter: brightness(var(--horizon-dim)); }
 .visual { width: 100%; max-width: 480px; }
+.wide { max-width: 600px; }
 
 .cardTitle { font-size: var(--t-title); line-height: var(--t-title-lh); letter-spacing: var(--t-title-ls); font-weight: var(--w-title); color: var(--c-ink); }
 .bookBtn {

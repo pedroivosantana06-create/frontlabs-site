@@ -9,3 +9,9 @@
 /* com JS: começa no zero e rola quando o card aparece */
 :global(html.js) .col { transform: translateY(0); }
 :global(html.js) [data-on] .col { transform: translateY(calc(var(--d) * -1em)); }
+/* atualização: do dígito anterior até o atual na segunda volta (o mesmo dígito, 10 posições abaixo) */
+.spin { animation: spin var(--dur-odo) var(--ease-enter) calc(var(--i) * 90ms) both; }
+@keyframes spin {
+  from { transform: translateY(calc(var(--f) * -1em)); }
+  to { transform: translateY(calc((var(--d) + 10) * -1em)); }
+}

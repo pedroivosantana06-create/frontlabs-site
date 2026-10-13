@@ -1,16 +1,57 @@
 import Image from "next/image";
 import { site } from "@/content/site";
 import type { StepsContent, StepVisual } from "@/content/types";
+import { Button } from "@/components/ui/Button";
+import { CodeTyper } from "@/components/ui/CodeTyper";
+import { LivingGradient } from "@/components/ui/LivingGradient";
+import { MotionToggle } from "@/components/ui/MotionToggle";
+import { PhotoShuffle } from "@/components/ui/PhotoShuffle";
 import { PreviewCard } from "@/components/ui/PreviewCard";
 import { Reveal } from "@/components/ui/Reveal";
+import { SendDemo } from "@/components/ui/SendDemo";
+import { VideoWindow } from "@/components/ui/VideoWindow";
 import styles from "./Steps.module.css";
 
 /**
  * Passos (DESIGN §6.8) — só da Front Labs.
  * Card branco raio 24 com a imagem do momento em cima (raio 18, 8px de margem)
  * e embaixo: círculo de etapa + rótulo mono, título de card e uma frase. O último círculo é preenchido.
+ * Com 5 passos (home, rodada 3): uma linha no desktop largo, faixa com rolagem horizontal (snap)
+ * entre 768 e 1279, um embaixo do outro no celular. Botões opcionais embaixo.
  */
 function Visual({ v }: { v: StepVisual }) {
+  if (v.kind === "send") {
+    return (
+      <div className={`${styles.stage} ${styles.veil}`} data-stage>
+        <Image src="/img/foto-borrada-hero.jpg" alt="" fill sizes="(max-width: 767px) 100vw, 20vw" className={styles.bg} />
+        <SendDemo label={v.label} url={v.url} or={v.or} button={v.button} />
+      </div>
+    );
+  }
+  if (v.kind === "video") {
+    return (
+      <div className={styles.stage} data-stage>
+        <Image src="/img/foto-noiva-borrada.jpg" alt="" fill sizes="(max-width: 767px) 100vw, 20vw" className={styles.bg} />
+        <div className={styles.mini}><VideoWindow video={v.video} url={v.url} status={v.status} compact /></div>
+      </div>
+    );
+  }
+  if (v.kind === "photos") {
+    return (
+      <div className={styles.stage} data-stage>
+        <Image src="/img/foto-cadeiras-borrada.jpg" alt="" fill sizes="(max-width: 767px) 100vw, 20vw" className={styles.bg} />
+        <PhotoShuffle label={v.label} photos={v.photos} />
+      </div>
+    );
+  }
+  if (v.kind === "code") {
+    return (
+      <div className={styles.stage} data-stage>
+        <Image src="/img/foto-borrada-hero.jpg" alt="" fill sizes="(max-width: 767px) 100vw, 20vw" className={styles.bg} />
+        <div className={styles.editor}><CodeTyper code={v.code} rows={4} small /></div>
+      </div>
+    );
+  }
   if (v.kind === "preview") {
     return (
       <div className={styles.stage} data-stage>
@@ -55,7 +96,7 @@ function Visual({ v }: { v: StepVisual }) {
   }
   return (
     <div className={`${styles.stage} ${styles.horizon}`} data-stage>
-      <Image src="/img/gradiente-horizonte-4x5.jpg" alt="" fill sizes="(max-width: 767px) 100vw, 33vw" className={styles.bg} />
+      <LivingGradient dim sizes="(max-width: 767px) 100vw, 33vw" />
       <div className={styles.live}>
         <span className={styles.domain}><i className={styles.dot} aria-hidden="true" />{v.domain}</span>
         <span className={styles.word}>{v.word}</span>
@@ -69,6 +110,7 @@ export function Steps({ data = site.steps }: { data?: StepsContent }) {
   return (
     <section id={data.id} data-section="steps" className="section" aria-labelledby={`${data.id}-title`}>
       <div className="container">
+        <div className={styles.headRow}>
         <header className={styles.head}>
           {data.label ? <p className="t-label">{data.label}</p> : null}
           <h2 id={`${data.id}-title`} className="t-display">
@@ -77,7 +119,9 @@ export function Steps({ data = site.steps }: { data?: StepsContent }) {
             {data.titleTurn ? <span className={styles.turn}>{data.titleTurn}</span> : null}
           </h2>
         </header>
-        <ol className={styles.grid} style={{ "--cols": data.items.length } as React.CSSProperties}>
+        {data.items.some((s) => !["preview", "plan", "invite"].includes(s.visual.kind)) ? <MotionToggle /> : null}
+        </div>
+        <ol className={[styles.grid, data.items.length > 4 ? styles.five : ""].join(" ")} style={{ "--cols": data.items.length } as React.CSSProperties}>
           {data.items.map((s, i) => (
             <Reveal as="li" key={s.title} delay={i * 120} className={styles.card}>
               <Visual v={s.visual} />
@@ -97,6 +141,12 @@ export function Steps({ data = site.steps }: { data?: StepsContent }) {
             </Reveal>
           ))}
         </ol>
+        {data.primary || data.secondary ? (
+          <div className={styles.actions}>
+            {data.primary ? <Button href={data.primary.href} variant="primary" size="md">{data.primary.label}</Button> : null}
+            {data.secondary ? <Button href={data.secondary.href} variant="link" size="md">{data.secondary.label}</Button> : null}
+          </div>
+        ) : null}
       </div>
     </section>
   );

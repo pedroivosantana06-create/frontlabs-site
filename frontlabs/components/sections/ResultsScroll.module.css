@@ -1,0 +1,35 @@
+.head { display: grid; gap: var(--s-4); margin-bottom: var(--s-7); }
+.turn { display: block; letter-spacing: var(--t-hero-ls); font-size: var(--turn-size); color: var(--turn-color); margin-top: var(--turn-gap); }
+
+/* moldura: largura da página menos o gutter; `clip` (não `hidden`) para o sticky continuar funcionando */
+.frame { position: relative; margin-inline: var(--frame-gutter); border-radius: var(--r-frame); overflow: clip; background: var(--c-placeholder-dark); }
+.sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.bg { position: absolute; inset: 0; opacity: 0; transition: opacity var(--dur-crossfade) var(--ease); }
+.img { object-fit: cover; transform: scale(var(--scrolly-zoom)); transition: transform calc(var(--dur-crossfade) * 2) var(--ease-enter); }
+.on { opacity: 1; }
+.on .img { transform: none; }
+
+/* os blocos sobem por cima do fundo: cada um ocupa ~uma tela, o card no meio */
+.blocks { position: relative; margin-top: -100svh; padding-block: 17svh; }
+.block { display: flex; align-items: center; min-height: 65svh; padding-inline: var(--s-7); }
+.card {
+  display: flex; flex-direction: column; width: min(440px, 100%); padding: var(--s-6);
+  border-radius: var(--r-card); background: var(--c-surface);
+}
+.cardTop { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
+.icon { display: grid; place-items: center; width: var(--icon-circle); height: var(--icon-circle); border-radius: 50%; background: var(--c-btn); color: var(--c-btn-ink); }
+.count { color: var(--c-mute); }
+.title { margin-top: var(--s-7); }
+.text { margin-top: var(--s-2); margin-bottom: var(--s-6); color: var(--c-text); font-size: var(--t-body); max-width: 32ch; }
+.product { align-self: flex-start; border: 1px solid var(--c-line-strong); border-radius: var(--r-pill); padding: 3px var(--s-3); color: var(--c-ink); }
+
+@media (max-width: 767px) {
+  .block { min-height: 55svh; padding-inline: var(--s-4); }
+  .blocks { padding-block: 22svh; }
+  .card { width: 100%; padding: var(--s-5); }
+  .title { margin-top: var(--s-6); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg, .img { transition: none; }
+  .img { transform: none; }
+}

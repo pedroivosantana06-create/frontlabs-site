@@ -1,0 +1,10 @@
+.toggle {
+  position: relative; display: grid; place-items: center; flex-shrink: 0;
+  width: var(--btn-h-sm); height: var(--btn-h-sm); border-radius: 50%; border: 1px solid var(--c-line); color: var(--c-mute);
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.toggle:hover { color: var(--c-ink); border-color: var(--c-line-strong); }
+/* toque mínimo de 44px sem mudar o desenho */
+.toggle::after { content: ""; position: absolute; inset: -4px; }
+.onMedia { border-color: var(--c-on-media-line); color: var(--c-on-media); }
+.onMedia:hover { color: var(--c-on-media); border-color: var(--c-on-media-border); }

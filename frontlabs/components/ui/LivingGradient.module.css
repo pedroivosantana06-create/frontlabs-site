@@ -1,0 +1,52 @@
+.root { position: absolute; inset: 0; z-index: -2; overflow: hidden; border-radius: inherit; background: var(--p-mata); pointer-events: none; }
+
+/* mancha: elipse de cor cheia no centro, sumindo até a borda (o "blur" já vem do gradiente) */
+.blob {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(closest-side, var(--c) 0%, var(--c) 28%, transparent 100%);
+  will-change: transform;
+  animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+.root[data-on] .blob { animation-play-state: running; }
+.p1 { animation-name: p1; }
+.p2 { animation-name: p2; }
+.p3 { animation-name: p3; }
+.p4 { animation-name: p4; }
+
+/* textura do arquivo original, parada, por cima das manchas */
+.texture { position: absolute; inset: 0; opacity: var(--living-texture); mix-blend-mode: soft-light; }
+.texture img { object-fit: cover; }
+.veil { position: absolute; inset: 0; background: var(--living-veil); }
+
+/*
+ * Caminhos fechados (0% = 100%): o loop é contínuo, sem ida e volta. Translate em % da própria
+ * mancha (~70–110% da caixa) → 15–30% da caixa; escala entre 0.85 e 1.25.
+ */
+@keyframes p1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  25% { transform: translate3d(30%, 14%, 0) scale(1.2); }
+  50% { transform: translate3d(8%, 34%, 0) scale(0.9); }
+  75% { transform: translate3d(-26%, 12%, 0) scale(1.12); }
+}
+@keyframes p2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.1); }
+  25% { transform: translate3d(-30%, 18%, 0) scale(0.88); }
+  50% { transform: translate3d(-12%, -22%, 0) scale(1.25); }
+  75% { transform: translate3d(22%, -10%, 0) scale(0.95); }
+}
+@keyframes p3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.95); }
+  33% { transform: translate3d(34%, -20%, 0) scale(1.22); }
+  66% { transform: translate3d(-32%, 16%, 0) scale(0.86); }
+}
+@keyframes p4 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  20% { transform: translate3d(24%, -26%, 0) scale(0.9); }
+  45% { transform: translate3d(-6%, -36%, 0) scale(1.2); }
+  70% { transform: translate3d(-28%, -8%, 0) scale(0.92); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob { animation: none !important; }
+}
