@@ -180,8 +180,8 @@ const PLANS: Record<"launch" | "signature" | "cinematic", Plan> = {
     featured: true,
     phrase: "Launch, plus the stuff that runs itself.",
     price: "$999",
-    priceNote: "paid once, no monthly fee",
-    split: "3 × $333",
+    priceNote: "paid in full",
+    split: "or $1,200 in 3 × $400",
     payment: "At approval, at launch and 30 days later.",
     text: "For businesses that want bookings and reviews handled, not just a new site.",
     features: [
@@ -652,7 +652,7 @@ export const site: Site = {
   /* ---------- páginas (rodada 2) ---------- */
   pages: {
     pricing: {
-      meta: { title: "Pricing", description: "Launch $600 or Signature $999, paid once. No monthly fee. You see your new site before you pay a thing." },
+      meta: { title: "Pricing", description: "Launch $600 or Signature from $999. No monthly fee. You see your new site before you pay a thing." },
       hero: {
         tag: "Pricing",
         title: "Pay once. Keep it forever.",
@@ -668,7 +668,7 @@ export const site: Site = {
         rows: [
           { title: "Nothing before the preview", text: "We build your preview first. You see it on a 15-minute call. If you don't want it, you owe nothing." },
           { title: "Launch: 2 × $300", text: "Half when you approve the preview, half when the site goes live." },
-          { title: "Signature: 3 × $333", text: "One part at approval, one at launch and one 30 days later." },
+          { title: "Signature: $999 upfront, or 3 × $400", text: "Pay $999 at once, or $1,200 in three parts: at approval, at launch and 30 days later." },
           { title: "Front Cinematic: +$197", text: "Added to Launch, paid once. Already included in Signature." },
           { title: "No monthly fee, ever", text: "After the 6 months of care, the site stays live and stays yours." },
         ],
@@ -682,8 +682,8 @@ export const site: Site = {
         yes: "Included",
         no: "Not included",
         rows: [
-          { label: "Price", values: ["$600", "$999"] },
-          { label: "Payments", values: ["2 × $300", "3 × $333"] },
+          { label: "Price", values: ["$600", "$999 or $1,200"] },
+          { label: "Payments", values: ["2 × $300", "1 × $999 or 3 × $400"] },
           { label: "Monthly fee", values: ["None", "None"] },
           { label: "Free preview before you pay", values: [true, true] },
           { label: "15-minute call", values: [true, true] },
@@ -762,7 +762,7 @@ export const site: Site = {
             label: "/your call",
             title: "Pick a plan",
             text: "Launch or Signature. Pay the first part only when you approve.",
-            visual: { kind: "plan", options: [{ name: "Launch", note: "$600" }, { name: "Signature", note: "$999", on: true }] },
+            visual: { kind: "plan", options: [{ name: "Launch", note: "$600" }, { name: "Signature", note: "from $999", on: true }] },
           },
           {
             label: "/live",
@@ -841,7 +841,7 @@ export const site: Site = {
           label: "/care · signature",
           name: "Care",
           phrase: "Six months of changes, handled.",
-          price: "Included in Signature · $999 · 3 × $333",
+          price: "Included in Signature · $999 · or 3 × $400",
           cta: { label: "See pricing", href: R.pricing },
           items: [
             { title: "Edits and updates", text: "New hours, new photos, new prices. You send it, we handle it." },
@@ -877,7 +877,7 @@ export const site: Site = {
         items: [
           { q: "Do I pay anything before I see the new site?", verdict: "No.", a: "We build your preview first. You see it on a 15-minute call, then decide." },
           { q: "Is there a monthly fee?", verdict: "No.", a: "No subscription and no monthly hosting fee. You pay once and the site is yours." },
-          { q: "How much does it cost?", verdict: "$600 or $999.", a: "Launch is $600 (2 × $300). Signature is $999 (3 × $333). Front Cinematic adds $197 to Launch." },
+          { q: "How much does it cost?", verdict: "$600 or $999.", a: "Launch is $600 (2 × $300). Signature is $999 paid in full, or $1,200 in 3 × $400. Front Cinematic adds $197 to Launch." },
           { q: "Can you get me to #1 on Google?", verdict: "No one can.", a: "Anyone who promises that is guessing. We build your site the right way for Google: clean code, fast pages, a clear structure." },
           { q: "Do I own the site?", verdict: "Yes.", a: "It lives on your domain, in your name." },
           { q: "What happens after the 6 months of care?", verdict: "It stays yours.", a: "The site stays live. Care ends; the site doesn't." },
