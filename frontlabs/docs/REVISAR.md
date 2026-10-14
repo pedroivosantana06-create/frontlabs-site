@@ -100,7 +100,7 @@ Prompt: `PROMPT_RODADA2.md`. Ver: `cd frontlabs && npm run dev -- -p 3011` → `
 ## R2.1 Preços (saíram do [CONFIRMAR])
 Fonte: apresentação da oferta (10/10/2026), passada no prompt da rodada 2.
 - **Launch $600** = 2 × $300 (metade ao aprovar o preview, metade no lançamento).
-- **Signature $999** = 3 × $333 (na aprovação, no lançamento e 30 dias depois). Selo "Everything handled" (não "Most chosen": não é um fato que temos).
+- **Signature $999 à vista** (paid in full) **ou $1,200 em 3 × $400** (na aprovação do preview, no lançamento e 30 dias depois). Regra atualizada em 14/10/2026 pelo Pedro. Selo "Everything handled" (não "Most chosen": não é um fato que temos).
 - **Front Cinematic +$197** para o Launch (incluso no Signature).
 - Sem mensalidade; depois dos 6 meses o site continua no ar e é do cliente.
 
